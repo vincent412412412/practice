@@ -1,0 +1,58 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>ch16-2 D3 Append 練習</title>
+        <link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>	
+		<div id="nobel-bar"> </div>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="script.js"></script>
+		<script> 
+            var nobelData = [
+                { key: 'United States', value: 336 },
+                { key: 'United Kingdom', value: 98 },
+                { key: 'Germany', value: 79 },
+                { key: 'France', value: 60 },
+                { key: 'Sweden', value: 29 },
+                { key: 'Switzerland', value: 23 },
+                { key: 'Japan', value: 21 },
+                { key: 'Russia', value: 19 },
+                { key: 'Netherlands', value: 17 },
+                { key: 'Astria', value: 14 },
+            { key: 'Taiwan', value: 1 }
+  
+            ];
+
+            var buildCrudeBarchar = function () {
+                var chartHolder = d3.select("#nobel-bar");
+                var margin = { top: 20, right: 20, bottom: 30, left: 40 };
+                var boundingRect = chartHolder.node().getBoundingClientRect();
+                var width = boundingRect.width - margin.left - margin.right;
+                height = boundingRect.height - margin.top - margin.bottom;
+                var barWidth = width / nobelData.length;
+                var svg = d3.select('#nobel-bar').append("svg")
+                .attr("width", width + margin.left + margin.right)
+                .attr("height", height + margin.top + margin.bottom)
+                .append("g").classed('chart', true)
+                .attr("transform","translate("+margin.left+","
+                +margin.top+"0");
+
+                nobelData.forEach(function (d, i) {
+                    svg.append('rect').classed('bar', true)
+                    .attr('height', d.value)
+                    .attr('width', barWidth)
+                    .attr('y',height-  d.value)
+                    .attr('x', i*barWidth);
+                });
+
+            };
+            buildCrudeBarchar();
+		</script>
+	</body>
+
+</html>

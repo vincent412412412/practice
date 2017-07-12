@@ -1,0 +1,7 @@
+#my-viz {font-family:Arial, Helvetica, sans-serif}
+#lead {font-size:150%}
+.alert {font-weight:bold; color:red;background:yellow}
+#nobel-bar{
+	width: 600px;
+	height: 400px;
+}

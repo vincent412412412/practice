@@ -1,0 +1,21 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+	<head>
+		<meta charset="utf-8" />
+		<title>ch16-2 DOM 練習</title>
+        <link rel="stylesheet" href="style.css" />
+	</head>
+
+	<body>	
+		<div id="nobel-bar"> </div>
+        <script src="http://d3js.org/d3.v3.min.js"></script>
+        <script src="script.js"></script>
+		<script> 
+            var width = parseInt(d3.select('#nobel-bar').style('width'), 10);
+            alert(width);
+		</script>
+	</body>
+
+</html>

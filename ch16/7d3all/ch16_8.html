@@ -1,0 +1,175 @@
+﻿<!DOCTYPE html>
+
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8" />
+    <title>ch16-4 D3 Scale 練習</title>
+    <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+    <div id="nobel-bar"> </div>
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script src="script.js"></script>
+    <script>
+        var nobelData = [
+            {
+                key: 'United States',
+                value: 336,
+                code: "USA"
+            },
+	{
+	    key: 'United Kingdom',
+	    value: 98,
+	    code: "UK"
+	},
+	{
+	    key: 'Germany',
+	    value: 79,
+	    code: "Ger"
+	},
+	{
+	    key: 'France',
+	    value: 60,
+	    code: "Fr"
+	},
+	{
+	    key: 'Sweden',
+	    value: 29,
+	    code: "Swd"
+	},
+	{
+	    key: 'Switzerland',
+	    value: 23,
+	    code: "Swi"
+	},
+	{
+	    key: 'Japan',
+	    value: 21,
+	    code: "Jpn"
+	},
+	{
+	    key: 'Russia',
+	    value: 19,
+	    code: "Rus"
+	},
+	{
+	    key: 'Netherlands',
+	    value: 17,
+	    code: "Neh"
+	},
+	{
+	    key: 'Astria',
+	    value: 14,
+	    code: "Ast"
+	},
+	{
+	    key: 'Taiwan',
+	    value: 1,
+	    code: "Twn"
+	}
+
+        ];
+
+        var chartHolder = d3.select("#nobel-bar");
+        var margin = {
+            top: 20,
+            right: 20,
+            bottom: 30,
+            left: 40
+        };
+        var boundingRect = chartHolder.node().getBoundingClientRect();
+        var width = boundingRect.width - margin.left - margin.right;
+        height = boundingRect.height - margin.top - margin.bottom;
+        //var barWidth = width / nobelData.length;
+        //var maxWinners = d3.max(nobelData, function (d) {
+        //    return +d.value;
+        // });
+        var xPaddingLeft = 20;
+
+        var yScale = d3.scale.linear()
+            .range([height, 0]);
+
+        var xScale = d3.scale.ordinal()
+            .rangeRoundBands([xPaddingLeft, width], 0.1);
+
+        var xAxis = d3.svg.axis()
+            .scale(xScale)
+            .orient("bottom");
+        var yAxis = d3.svg.axis()
+            .scale(yScale)
+            .orient('left')
+            .ticks(10);
+
+        var TRANS_DURATION = 2000;
+
+        var svg = d3.select('#nobel-bar').append("svg")
+            .attr("width", width + margin.left + margin.right)
+            .attr("height", height + margin.top + margin.bottom)
+            .append("g").classed('chart', true)
+            .attr("transform", "translate(" + margin.left + "," +
+                margin.top + ")");
+        svg.append("g").attr("class", "x axis")
+            .attr("transform", "translate(0," + height + ")");
+
+        svg.append("g")
+            .attr("class", "y axis")
+            .append("text")
+            .attr('id', 'y-axis-label')
+            .attr("transform", "rotate(-90)")
+            .attr("y", 6)
+            .attr("dy", ".71em")
+            .attr("text-anchor", "end");
+
+        var update = function (data) {
+
+            xScale.domain(data.map(function (d) {
+                return d.code;
+            }));
+            yScale.domain([0, d3.max(data, function (d) {
+                return +d.value;
+            })]);
+            svg.select('.x.axis')
+                .transition().duration(TRANS_DURATION)
+                .call(xAxis)
+                .selectAll("test")
+                .style("text-anchor", "end")
+                .attr("dx", "-.8em")
+                .attr("dy", ".15em")
+                .attr("transform", "rotate(-65)");
+
+            svg.select('.y.axis')
+                .transition().duration(TRANS_DURATION)
+                .call(yAxis);
+            var yLabel = svg.select('#y-axis-label');
+            yLabel.text("Number of winners");
+
+            var bars = svg.selectAll('.bar')
+                .data(data, function (d) {
+                    return d.code;
+                });
+
+            bars.enter().append('rect')
+                .classed('bar', true);
+            bars.attr("x", xPaddingLeft);
+
+            bars.transition().duration(TRANS_DURATION)
+                .attr("x", function (d) {
+                    return xScale(d.code)
+                })
+                .attr("width", xScale.rangeBand())
+                .attr("y", function (d) {
+                    return yScale(d.value);
+                })
+                .attr("height", function (d, i) {
+                    return height - yScale(d.value);
+                });
+
+            bars.exit().remove();
+        };
+        update(nobelData);
+    </script>
+</body>
+
+</html>

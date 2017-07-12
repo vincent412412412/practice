@@ -1,0 +1,63 @@
+﻿<!DOCTYPE html>
+<meta charset="utf-8" />
+<style>
+    svg#chart{background:lightgray;
+              fill:lightblue;
+    }
+    #chart line{
+        stroke: green;
+        stroke-width: 3px;
+        opacity:0.5;
+    }
+    #chart circle{
+        fill: red;
+        opacity:0.33;
+    }
+    #chart rect{
+        stroke: red;
+        fill:blue;
+    }
+    #chart polygon{
+        fill: green;
+    }
+    #chart text{
+        fill: black;
+        font-size: 16px;
+    }
+    #chart path{
+        stroke:red;
+        fill: none;
+    }
+</style>
+<body>
+ 
+    <svg id="chart">
+   </svg>
+
+    <script src="http://d3js.org/d3.v3.min.js"></script>
+    <script>
+        var chartCircles = function (data) {
+            var chart = d3.select('#chart');
+            chart.attr('height', data.height).attr('width', data.width);
+            debugger;
+            chart.selectAll('cricle').data(data.circles)
+            .enter()
+            .append('circle')
+            .attr('cx', function (d) { return d.x })
+            .attr('cy', function (d) { return d.y })
+            .attr('r', function (d) { return d.r });
+        };
+
+        var data = {
+            width: 300, height: 120,
+            circles: [
+                {'x':50,'y':30,'r':20},
+                { 'x': 70, 'y': 80, 'r': 10 },
+                { 'x': 160, 'y': 60, 'r': 10 },
+                { 'x': 200, 'y': 100, 'r': 5 },
+
+            ]
+        };
+        chartCircles(data);
+    </script>
+</body>
